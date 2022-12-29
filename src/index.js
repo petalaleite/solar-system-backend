@@ -2,14 +2,14 @@ const readline = require('readline-sync')
 const { writeNewMissionData } = require('./utils/fsUtils')
 
 async function main() {
-  const name = readline.question('Qual é o nome da missão?')
-  const year = readline.questionInt('Qual é o ano da missão?')
-  const country = readline.question('Qual é o país da missão?')
-  const destination = readline.question('Qual é o destino da missão?')
+  const name = readline.question("What is the mission's name?")
+  const year = readline.questionInt("What is the mission's year?")
+  const country = readline.question("What is the mission's country?")
+  const destination = readline.question("Where is the mission's destination?")
 
   const newMission = { name, year, country, destination }
   writeNewMissionData(newMission)
-  console.log('Nova missão registrada com sucesso')
+  console.log('New mission successfully added')
 }
 
 main();

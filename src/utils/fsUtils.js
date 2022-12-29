@@ -10,9 +10,10 @@ async function readMissionsData() {
     console.log(missions)
     return missions;
   } catch(error) {
-    console.error(`Erro na leitura do arquivo: ${error}`)
+    console.error(`Error at reading file: ${error}`)
   }
 }
+
 
 async function writeNewMissionData(newMission) {
   try {
@@ -23,7 +24,7 @@ async function writeNewMissionData(newMission) {
 
     await fs.writeFile(path.resolve(__dirname, MISSION_DATA_PATH), allMissions)
   } catch(error) {
-    console.error(`Erro na escrita do arquivo: ${error}`)
+    console.error(`Error at writing file: ${error}`)
   }
 }
 module.exports = {
