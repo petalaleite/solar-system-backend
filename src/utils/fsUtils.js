@@ -27,7 +27,41 @@ async function writeNewMissionData(newMission) {
   }
 }
 
+async function updateMissionData(id, updatedMissionData) {
+  const oldMissions = await readMissionsData();
+  const updatedMission = { id, ...updatedMissionData };
+  const updatedMissions = oldMissions.reduce((missionsList, currentMission) => {
+    if (currentMission.id === updatedMission.id) return [...missionsList, updatedMission];
+    return [...missionsList, currentMission];
+  }, []);
+
+  const updatedData = JSON.stringify(updatedMissions);
+  try {
+    await fs.writeFile(path.resolve(__dirname, MISSION_DATA_PATH), updatedData);
+    console.log(`Mission updated with id ${id}`);
+
+    return updatedMission;
+  } catch (error) {
+    console.error(`Error at writing file: ${error}`);
+  }
+}
+
+async function deleteMissionData(id) {
+  const oldMissions = await readMissionsData();
+  const updatedMissions = oldMissions.filter((currentMission) => currentMission.id !== id);
+  
+  const updatedData = JSON.stringify(updatedMissions);
+  try {
+    await fs.writeFile(path.resolve(__dirname, MISSION_DATA_PATH), updatedData);
+    console.log(`Deleted mission with the id ${id}`);
+  } catch (error) {
+    console.error(`Error at writing the file ${error}`);
+  }
+}
+
 module.exports = {
   readMissionsData,
   writeNewMissionData,
+  updateMissionData,
+  deleteMissionData,
 };
