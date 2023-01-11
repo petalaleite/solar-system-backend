@@ -29,6 +29,11 @@ describe('Missions route', function () {
   });
 
   describe('POST /missions', function () {
+    beforeEach(function () {
+      sinon.stub(fs.promises, 'writeFile').resolves(mockMissions);
+    });
+    afterEach(sinon.restore);
+
     const mockMission = {
       name: 'Trybe',
       year: '2022',
@@ -36,7 +41,6 @@ describe('Missions route', function () {
       destination: 'Titan',
     };
     it('Return created mission with an id', async function () {
-      sinon.stub(fs.promises, 'writeFile').resolves();
       const response = await chai.request(app).post('/missions').send(mockMission);
 
       expect(response.status).to.be.equal(201);
@@ -46,11 +50,9 @@ describe('Missions route', function () {
       expect(response.body.mission.year).to.equal(mockMission.year);
       expect(response.body.mission.country).to.equal(mockMission.country);
       expect(response.body.mission.destination).to.equal(mockMission.destination);
-      sinon.restore();
     });
 
     it('Write new mission at missions file', async function () {
-      sinon.stub(fs.promises, 'writeFile').resolves();
       await chai.request(app).post('/missions').send(mockMission);
       expect(fs.promises.writeFile.called).to.be.equal(true);
     });
