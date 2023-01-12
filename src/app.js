@@ -1,4 +1,5 @@
 const express = require('express');
+const validateMissionId = require('./middlewares/validateMissionId');
 const { 
   readMissionsData, 
   writeNewMissionData, 
@@ -26,7 +27,7 @@ app.post('/missions', async (req, res) => {
   res.status(201).json({ mission: newMissionWithId });
 });
 
-app.put('/missions/:id', async (req, res) => {
+app.put('/missions/:id', validateMissionId, async (req, res) => {
   const { id } = req.params;
   const updatedMissionData = req.body;
 
