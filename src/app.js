@@ -1,4 +1,5 @@
 const express = require('express');
+const validateMissionData = require('./middlewares/validateMissionData');
 const validateMissionId = require('./middlewares/validateMissionId');
 const { 
   readMissionsData, 
@@ -21,13 +22,13 @@ app.get('/missions', async (req, res) => {
   return res.status(200).json({ missions });
 });
 
-app.post('/missions', async (req, res) => {
+app.post('/missions', validateMissionData, async (req, res) => {
   const newMission = req.body;
   const newMissionWithId = await writeNewMissionData(newMission);
   res.status(201).json({ mission: newMissionWithId });
 });
 
-app.put('/missions/:id', validateMissionId, async (req, res) => {
+app.put('/missions/:id', validateMissionId, validateMissionData, async (req, res) => {
   const { id } = req.params;
   const updatedMissionData = req.body;
 
@@ -36,7 +37,7 @@ app.put('/missions/:id', validateMissionId, async (req, res) => {
   return res.status(201).json({ mission: updatedMission });
 });
 
-app.delete('/missions/:id', async (req, res) => {
+app.delete('/missions/:id', validateMissionData, async (req, res) => {
   const { id } = req.params;
   await deleteMissionData(Number(id));
 
